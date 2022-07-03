@@ -1,0 +1,10 @@
+CREATE TABLE mesa (id INT, ubicacion VARCHAR, estado VARCHAR, id_pedido INT, numero INT, PRIMARY KEY (id));
+CREATE TABLE persona (id INT, id_pedido INT, numero INT, ubicacion INT, estado INT,telefono INT,email VARCHAR, passwd VARCHAR, PRIMARY KEY (id));
+CREATE TABLE pedido (id INT, platos INT, estado INT, PRIMARY KEY (id));
+CREATE TABLE factura (id INT, fecha DATE, estado INT,forma_pago VARCHAR,total NUMERIC, PRIMARY KEY (id));
+CREATE TABLE menu (id INT, id_plato INT, PRIMARY KEY (id));
+CREATE TABLE ingrediente (id INT, codigo INT,nombre VARCHAR, descripcion VARCHAR, precio NUMERIC, cantidad NUMERIC, estado INT, foto BYTEA, PRIMARY KEY (id));
+CREATE TABLE proveedor (id INT, nombre VARCHAR, apellido VARCHAR, identificacion INT, email VARCHAR, telefono INT, descripcion VARCHAR, PRIMARY KEY (id));
+CREATE TABLE inventario (id INT, id_ingredientes INT, PRIMARY KEY (id));
+CREATE TABLE estado (id INT, tipo_estado INT, PRIMARY KEY (id));
+CREATE TABLE usuarios (id INT, passwd INT, PRIMARY KEY (id));
