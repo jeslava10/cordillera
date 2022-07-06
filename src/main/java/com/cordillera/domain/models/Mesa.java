@@ -5,17 +5,17 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 @Entity
 @Data
+@Table(name = "tbmesa")
+public class Mesa {
+    @Id
+    private Integer idmesa;
 
-public class User {
+    private BigDecimal numero;
 
-  @Id
-  private Long id;
-
-  private String name;
-
-  private String address;
+    private Integer idpedido;
 
 }
