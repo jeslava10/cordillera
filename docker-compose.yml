@@ -11,6 +11,9 @@ services:
        POSTGRES_DB: cordillera 
     volumes:
       - ./config/db:/docker-entrypoint-initdb.d
+    networks:
+      default:
+        ipv4_address: 11.100.0.100
 
   pgadmin:
     image: dpage/pgadmin4
@@ -22,3 +25,9 @@ services:
     depends_on:
       - db
 
+networks:
+  default:
+    attachable: true
+    ipam:
+      config:
+        - subnet: 11.100.0.0/16

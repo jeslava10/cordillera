@@ -2,12 +2,10 @@ package com.cordillera.domain.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "User")
+@Table(name = "usercodillera")
 @Builder
 @AllArgsConstructor()
 @NoArgsConstructor
@@ -16,6 +14,7 @@ import javax.persistence.Table;
 public class User {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
