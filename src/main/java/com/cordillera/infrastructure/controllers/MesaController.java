@@ -2,19 +2,23 @@ package com.cordillera.infrastructure.controllers;
 
 import com.cordillera.application.service.MesaService;
 import com.cordillera.domain.dto.MesaDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/")
+@Tag(name="mesa")
 public class MesaController {
     private final MesaService mesaService;
 
     @PostMapping("mesa")
-    public ResponseEntity<MesaDto> grabaMesa(@RequestBody MesaDto mesaDto) throws Exception {
+    public ResponseEntity<MesaDto> grabaMesa(@RequestBody @Valid MesaDto mesaDto) throws Exception {
         return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
                 HttpStatus.CREATED);
     }
