@@ -2,6 +2,7 @@ package com.cordillera.domain.models;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,10 +13,10 @@ import java.math.BigDecimal;
 @Table(name = "tbmesa")
 public class Mesa {
     @Id
-    private Integer idmesa;
+    @Column(name = "idmesa")
+    private Long idMesa;
 
-    private BigDecimal numero;
-
-    private Integer idpedido;
+    @Column(name = "numeromesa")
+    private BigDecimal numeroMesa;
 
 }

@@ -7,10 +7,10 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface MesaMapper {
-    MesaMapper INTERFASE = Mappers.getMapper(MesaMapper.class);
+    MesaMapper INSTANCE = Mappers.getMapper(MesaMapper.class);
 
-    Mesa toEntity(MesaDto mesaDto);
+    Mesa mesaDTOToMesaModel(MesaDto mesaDto);
 
-    MesaDto toDTO(Mesa mesa);
+    MesaDto mesaModeloToMesaDTO(Mesa mesa);
 
 }
