@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -21,29 +22,31 @@ public class MesaService {
     private MesaRepository mesaRepository;
 
     public MesaDto saveMesa(MesaDto mesaDto) throws Exception {
-        Optional<Mesa> mesaval = mesaRepository.findById(mesaDto.getIdMesa());
-        if(!mesaval.isEmpty()){
+        Mesa mesaval = mesaRepository.findByNumeroMesa(mesaDto.getNumeroMesa()).orElse(null);
+
+        if(mesaval!=null){
             throw new Exception("La mesa ya existe en el sistema");
-        }else{
-            return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
         }
+        return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 
-    public void borrarMesa(@PathVariable Long idmesa) throws Exception {
-        Optional<Mesa> mesaval = mesaRepository.findById(idmesa);
-        if(mesaval.isEmpty()){
+    public void borrarMesa(@PathVariable BigDecimal numeromesa) throws Exception {
+        Mesa mesaval = mesaRepository.findByNumeroMesa(numeromesa).orElse(null);
+        if(mesaval==null){
             throw new Exception("Debe seleccionar al menos una mesa");
-        }else{
-            mesaRepository.deleteAllById(Collections.singleton(idmesa));
         }
+        mesaRepository.deleteAllById(Collections.singleton(mesaval.getIdMesa()));
     }
 
     public MesaDto actulizarMesa(MesaDto mesaDto) throws Exception {
-        Optional<Mesa> mesaval = mesaRepository.findById(mesaDto.getIdMesa());
-        if(mesaval.isEmpty()){
+        Mesa mesaValId = mesaRepository.findById(mesaDto.getIdMesa()).orElse(null);
+        if(mesaValId==null){
             throw new Exception("La mesa no existe en el sistema");
-        }else{
-            return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
         }
+        Mesa mesaValMesa = mesaRepository.findByNumeroMesa(mesaDto.getNumeroMesa()).orElse(null);
+        if(mesaValMesa!=null){
+            throw new Exception("La mesa YA existe en el sistema");
+        }
+        return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 }
