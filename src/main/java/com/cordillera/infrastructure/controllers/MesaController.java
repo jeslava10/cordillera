@@ -37,8 +37,8 @@ public class MesaController {
         }
     }
 
-    @DeleteMapping(path = "mesa/{id}")
-    public ResponseEntity<?> deleteMesa(@PathVariable(value="numeromesa") BigDecimal numeromesa) throws Exception {
+    @DeleteMapping(path = "mesa/{numeromesa}")
+    public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
         try{
             mesaService.borrarMesa(numeromesa);
             return ResponseEntity.status(HttpStatus.OK).build();
