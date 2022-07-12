@@ -13,7 +13,7 @@ services:
       - ./config/db:/docker-entrypoint-initdb.d
     networks:
       default:
-        ipv4_address: 11.100.0.100
+        ipv4_address: 10.101.0.200
 
   pgadmin:
     image: dpage/pgadmin4
@@ -30,4 +30,4 @@ networks:
     attachable: true
     ipam:
       config:
-        - subnet: 11.100.0.0/16
+        - subnet: 10.101.0.0/16

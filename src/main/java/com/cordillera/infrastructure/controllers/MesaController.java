@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,27 +19,32 @@ public class MesaController {
     private final MesaService mesaService;
 
     @PostMapping("mesa")
-    public ResponseEntity<MesaDto> grabaMesa(@RequestBody @Valid MesaDto mesaDto) throws Exception {
-        return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
-                HttpStatus.CREATED);
+    public ResponseEntity<?> grabaMesa(@RequestBody @Valid MesaDto mesaDto) throws Exception {
+        try{
+            return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
+                    HttpStatus.CREATED);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+        }
     }
 
     @PutMapping("mesa")
-    public ResponseEntity<MesaDto> actalizaMesa(@RequestBody MesaDto mesaDto) throws Exception {
-        return new ResponseEntity<>(mesaService.actulizarMesa(mesaDto), HttpStatus.OK);
+    public ResponseEntity<?> actalizaMesa(@RequestBody MesaDto mesaDto) throws Exception {
+        try{
+            return new ResponseEntity<>(mesaService.actulizarMesa(mesaDto), HttpStatus.OK);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+        }
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> deleteTRM(@PathVariable Long idmesa) throws Exception {
-
+    @DeleteMapping(path = "mesa/{numeromesa}")
+    public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
         try{
-            mesaService.borrarMesa(idmesa);
+            mesaService.borrarMesa(numeromesa);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (Exception e){
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("{\"error\":\"Does not exist for delete\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
         }
     }
 }
