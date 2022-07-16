@@ -1,17 +1,20 @@
 package com.cordillera.domain.models;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Data
-@Table
+@Table(name = "usercodillera")
+@Builder
+@AllArgsConstructor()
+@NoArgsConstructor
+@Getter
+@Setter
 public class User {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
