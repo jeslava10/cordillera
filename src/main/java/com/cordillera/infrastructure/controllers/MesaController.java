@@ -2,42 +2,54 @@ package com.cordillera.infrastructure.controllers;
 
 import com.cordillera.application.service.MesaService;
 import com.cordillera.domain.dto.MesaDto;
+import com.cordillera.domain.excepcion.MesaException;
+import com.cordillera.domain.excepcion.NofoundException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
 
-@RequiredArgsConstructor
-@RestController
-@RequestMapping(value = "/api/v1/")
+
+
 @Tag(name="mesa")
+@RequiredArgsConstructor
+@RestController("mesa")
 public class MesaController {
+
     private final MesaService mesaService;
 
-    @PostMapping("mesa")
-    public ResponseEntity<?> grabaMesa(@RequestBody @Valid MesaDto mesaDto) throws Exception {
+    @PostMapping()
+    public ResponseEntity<?> grabarMesa(@RequestBody @Valid MesaDto mesaDto) throws MesaException , NofoundException {
         try{
             return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
                     HttpStatus.CREATED);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+        }catch (MesaException me){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(me.getMessage());
+        }catch (NofoundException nfe){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(nfe.getMessage());
         }
     }
 
-    @PutMapping("mesa")
-    public ResponseEntity<?> actalizaMesa(@RequestBody MesaDto mesaDto) throws Exception {
+    @PutMapping()
+    public ResponseEntity<?> actalizarMesa(@RequestBody MesaDto mesaDto) throws  MesaException  , NofoundException {
         try{
             return new ResponseEntity<>(mesaService.actulizarMesa(mesaDto), HttpStatus.OK);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+        }catch (MesaException me){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(me.getMessage());
+        }catch (NofoundException nfe){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(nfe.getMessage());
         }
     }
 
-    @DeleteMapping(path = "mesa/{numeromesa}")
+    @DeleteMapping(path = "/{numeromesa}")
     public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
         try{
             mesaService.borrarMesa(numeromesa);
