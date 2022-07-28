@@ -1,7 +1,8 @@
 package com.cordillera.infrastructure.controllers;
 
 import com.cordillera.application.service.MesaService;
-import com.cordillera.domain.dto.MesaDto;
+import com.cordillera.application.service.ProveedorService;
+import com.cordillera.domain.dto.ProveedorDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,38 +15,37 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api/v1/")
-@Tag(name="mesa")
-public class MesaController {
-    private final MesaService mesaService;
+@Tag(name="proveedor")
+public class ProveedorController {
+    private final ProveedorService proveedorService;
 
-    @PostMapping("mesa")
-    public ResponseEntity<?> saveMesa(@RequestBody @Valid MesaDto mesaDto) throws Exception {
+    @PostMapping("provvedor")
+    public ResponseEntity<?> saveProveedor(@RequestBody @Valid ProveedorDto proveedorDto){
         try{
-            return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
+            return new ResponseEntity<>(proveedorService.saveProveedor(proveedorDto),
                     HttpStatus.CREATED);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
         }
     }
 
-
-    @PutMapping("mesa")
-    public ResponseEntity<?> updateMesa(@RequestBody MesaDto mesaDto) throws Exception {
+    @PutMapping("proveedor")
+    public ResponseEntity<?> updateProveedor(@RequestBody ProveedorDto proveedorDto){
         try{
-            return new ResponseEntity<>(mesaService.updateMesa(mesaDto), HttpStatus.OK);
+            return new ResponseEntity<>(proveedorService.updateProveedor(proveedorDto), HttpStatus.OK);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
         }
     }
 
     @DeleteMapping(path = "mesa/{numeromesa}")
-    public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
+    public ResponseEntity<?> deleteProveedor(BigDecimal idproveedor){
         try{
-            mesaService.deleteMesa(numeromesa);
+            proveedorService.deleteProveedor(idproveedor);
             return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
         }
     }
+
 }

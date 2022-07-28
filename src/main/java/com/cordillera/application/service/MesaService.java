@@ -30,7 +30,7 @@ public class MesaService {
         return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 
-    public void borrarMesa(@PathVariable BigDecimal numeromesa) throws Exception {
+    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws Exception {
         Mesa mesaval = mesaRepository.findByNumeroMesa(numeromesa).orElse(null);
         if(mesaval==null){
             throw new Exception("Debe seleccionar al menos una mesa");
@@ -38,7 +38,7 @@ public class MesaService {
         mesaRepository.deleteAllById(Collections.singleton(mesaval.getIdMesa()));
     }
 
-    public MesaDto actulizarMesa(MesaDto mesaDto) throws Exception {
+    public MesaDto updateMesa(MesaDto mesaDto) throws Exception {
         Mesa mesaValId = mesaRepository.findById(mesaDto.getIdMesa()).orElse(null);
         if(mesaValId==null){
             throw new Exception("La mesa no existe en el sistema");
