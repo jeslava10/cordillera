@@ -22,7 +22,7 @@ public class MesaService {
     @Autowired
     private MesaRepository mesaRepository;
 
-    public MesaDto saveMesa(MesaDto mesaDto) throws MesaException, NofoundException {
+    public MesaDto saveMesa(MesaDto mesaDto) throws MesaException {
 
         Mesa mesaval = mesaRepository.findByNumeroMesa(mesaDto.getNumeroMesa()).orElse(null);
 
@@ -32,10 +32,10 @@ public class MesaService {
         return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 
-    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws Exception {
+    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws NofoundException {
         Mesa mesaval = mesaRepository.findByNumeroMesa(numeromesa).orElse(null);
         if(mesaval==null){
-            throw new Exception("Debe seleccionar al menos una mesa");
+            throw new NofoundException("Debe seleccionar al menos una mesa");
         }
         mesaRepository.deleteAllById(Collections.singleton(mesaval.getIdMesa()));
     }
