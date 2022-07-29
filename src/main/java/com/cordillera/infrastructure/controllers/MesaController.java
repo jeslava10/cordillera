@@ -26,6 +26,7 @@ public class MesaController {
 
     private final MesaService mesaService;
 
+
     @PostMapping()
     public ResponseEntity<?> grabarMesa(@RequestBody @Valid MesaDto mesaDto) throws MesaException , NofoundException {
         try{
@@ -52,7 +53,7 @@ public class MesaController {
     @DeleteMapping(path = "/{numeromesa}")
     public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
         try{
-            mesaService.borrarMesa(numeromesa);
+            mesaService.deleteMesa(numeromesa);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (Exception e){

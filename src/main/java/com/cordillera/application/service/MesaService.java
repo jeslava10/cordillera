@@ -32,13 +32,14 @@ public class MesaService {
         return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 
-    public void borrarMesa(@PathVariable BigDecimal numeromesa) throws Exception {
+    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws Exception {
         Mesa mesaval = mesaRepository.findByNumeroMesa(numeromesa).orElse(null);
         if(mesaval==null){
             throw new Exception("Debe seleccionar al menos una mesa");
         }
         mesaRepository.deleteAllById(Collections.singleton(mesaval.getIdMesa()));
     }
+
 
     public MesaDto actulizarMesa(MesaDto mesaDto) throws MesaException  , NofoundException {
         Mesa mesaValId = mesaRepository.findById(mesaDto.getIdMesa()).orElse(null);
