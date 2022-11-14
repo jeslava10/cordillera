@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CargoService {
 
+    //TODO AJUSTAR LA INYECCION DE DEPENDCIA SI POR CONTRUCTOR O POR CAMPOS
+    //TODO https://http.cat/
     @Autowired
     private final CargoMapper cargoMapper;
 
@@ -24,16 +25,25 @@ public class CargoService {
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoDto cargoDto){
+        //TODO VALIDACIONES
+        //TODO VALIDAR CARGO NO EXISTA
+        //TODO METODO NO HACE NADA GUARDAR EN BASE DE DATOS
+        //TODO realizar excepcion personalizada
         return cargoDto;
     }
 
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto){
+        //TODO VALIDACIONES
+        //TODO VALIDAR DESCRIOCION NO EXISTA
+        //TODO realizar excepcion personalizada
         return cargoMapper.cargoModelToCargoDTO(cargoRepository.save(cargoMapper.cargoDTOToCargoModel(cargoDto)));
     }
 
     //Metodo para eliminar un cargo
     public void deleteCargo(Long cargoId){
+        //TODO VALIDACIONES REGISTRO BORRAR EXISTA
+        //TODO realizar excepcion personalizada
         cargoRepository.deleteById(cargoId);
     }
 
@@ -45,10 +55,16 @@ public class CargoService {
         if(listaCargos.isEmpty()){
             //TODO realizar excepcion personalizada
         }
+
         for(Cargo lCargo: listaCargos){
             cargosDTO.add(cargoMapper.cargoModelToCargoDTO(lCargo));
         }
+
         return cargosDTO;
         //return listaCargos.stream().map(cargoMapper::cargoModelToCargoDTO).collect(Collectors.toList());
     }
+
+    //TODO METODO PARA CONSULTAR POR ID
+
+    //TODO METODO PARA CONSULTAR POR DESCRIPCION
 }

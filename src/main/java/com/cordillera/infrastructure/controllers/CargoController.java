@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/cargos/")
+@RequestMapping(value = "/api/cargos")
 public class CargoController {
 
     private final CargoService cargoService;
 
-    @PostMapping("guardarcargo")
+    @PostMapping()
     public ResponseEntity<?> guardarCargo(@RequestBody CargoDto cargoDto){
         return new ResponseEntity<>(cargoService.saveCargo(cargoDto), HttpStatus.CREATED);
     }
@@ -25,7 +25,7 @@ public class CargoController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("actualizarcargo")
+    @PutMapping()
     public ResponseEntity<?> actualizarCargo(@RequestBody CargoDto cargoDto){
         return new ResponseEntity<>(cargoService.updateCargo(cargoDto), HttpStatus.OK);
     }

@@ -4,7 +4,7 @@ import com.cordillera.application.mapper.MesaMapper;
 import com.cordillera.application.repository.jpa.MesaRepository;
 import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.excepcion.MesaException;
-import com.cordillera.domain.excepcion.NofoundException;
+import com.cordillera.domain.excepcion.NoFoundException;
 import com.cordillera.domain.models.Mesa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +32,19 @@ public class MesaService {
         return mesaMapper.mesaModeloToMesaDTO(mesaRepository.save(mesaMapper.mesaDTOToMesaModel(mesaDto)));
     }
 
-    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws NofoundException {
+    public void deleteMesa(@PathVariable BigDecimal numeromesa) throws NoFoundException {
         Mesa mesaval = mesaRepository.findByNumeroMesa(numeromesa).orElse(null);
         if(mesaval==null){
-            throw new NofoundException("Debe seleccionar al menos una mesa");
+            throw new NoFoundException("Debe seleccionar al menos una mesa");
         }
         mesaRepository.deleteAllById(Collections.singleton(mesaval.getIdMesa()));
     }
 
 
-    public MesaDto actulizarMesa(MesaDto mesaDto) throws MesaException  , NofoundException {
+    public MesaDto actulizarMesa(MesaDto mesaDto) throws MesaException  , NoFoundException {
         Mesa mesaValId = mesaRepository.findById(mesaDto.getIdMesa()).orElse(null);
         if(mesaValId==null){
-            throw new NofoundException("La mesa no existe en el sistema");
+            throw new NoFoundException("La mesa no existe en el sistema");
         }
         Mesa mesaValMesa = mesaRepository.findByNumeroMesa(mesaDto.getNumeroMesa()).orElse(null);
         if(mesaValMesa!=null){
