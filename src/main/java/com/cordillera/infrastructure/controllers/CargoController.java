@@ -35,4 +35,14 @@ public class CargoController {
         return ResponseEntity.ok(cargoService.listCargo());
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<?> porId(@PathVariable Long id){
+        return ResponseEntity.ok(cargoService.findById(id));
+    }
+
+    @GetMapping(path = "/{nombre}")
+    public ResponseEntity<?> porNombre(@PathVariable String nombre){
+        return ResponseEntity.ok(cargoService.findByNombre(nombre));
+    }
+
 }
