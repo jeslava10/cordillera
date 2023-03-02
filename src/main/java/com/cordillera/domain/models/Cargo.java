@@ -6,10 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -17,11 +14,14 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Table(name = "tbcargo")
 public class Cargo {
     //TODO AJUSTAR LA ENTIDAD COMO ESTA TABLA DE BASE DE DATOS create table tbcargo(idcargo serial primary key,  descripcion char(40) not null);
     @Id
+    @Column(name = "idcargo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCargo;
+    @Column(name = "descripcion")
     private String nombreCargo;
 
     @Override

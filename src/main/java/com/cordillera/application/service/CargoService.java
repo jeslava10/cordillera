@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -72,7 +71,6 @@ public class CargoService {
         }
 
         return cargosDTO;
-        //return listaCargos.stream().map(cargoMapper::cargoModelToCargoDTO).collect(Collectors.toList());
     }
 
     //TODO METODO PARA CONSULTAR POR ID
