@@ -63,7 +63,7 @@ public class CargoService {
 
         if(listaCargos.isEmpty()){
             //TODO realizar excepcion personalizada
-            throw new RuntimeException("No hay cargos en el sistema");
+            throw new CargoException("No hay cargos en el sistema");
         }
 
         for(Cargo lCargo: listaCargos){
