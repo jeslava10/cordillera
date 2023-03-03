@@ -15,19 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CargoService {
 
-    //TODO AJUSTAR LA INYECCION DE DEPENDCIA SI POR CONTRUCTOR O POR CAMPOS
-    //TODO https://http.cat/
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoDto cargoDto) throws CargoException{
-        //TODO VALIDACIONES
-        //TODO VALIDAR CARGO NO EXISTA
-        //TODO METODO NO HACE NADA GUARDAR EN BASE DE DATOS
-        //TODO realizar excepcion personalizada
-        Cargo cargoValidacionNombre = cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).orElse(null);
-        if(cargoValidacionNombre != null){
+
+        if(!cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).isPresent()){
             throw new CargoException("Cargo ya existe en el sistema");
         }
         return cargoMapper.cargoModelToCargoDTO(cargoRepository.save(cargoMapper.cargoDTOToCargoModel(cargoDto)));
@@ -35,11 +29,8 @@ public class CargoService {
 
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto) throws CargoException{
-        //TODO VALIDACIONES
-        //TODO VALIDAR DESCRIOCION NO EXISTA
-        //TODO realizar excepcion personalizada
-        Cargo cargoValidacionNombre = cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).orElse(null);
-        if(cargoValidacionNombre == null){
+
+        if(!cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).isPresent()){
             throw new CargoException("No se puede tener cargos sin nombre");
         }
         return cargoMapper.cargoModelToCargoDTO(cargoRepository.save(cargoMapper.cargoDTOToCargoModel(cargoDto)));
@@ -47,10 +38,8 @@ public class CargoService {
 
     //Metodo para eliminar un cargo
     public void deleteCargo(Long cargoId) throws CargoException{
-        //TODO VALIDACIONES REGISTRO BORRAR EXISTA
-        //TODO realizar excepcion personalizada
-        Cargo cargoValidacionId = cargoRepository.findById(cargoId).orElse(null);
-        if(cargoValidacionId == null){
+
+        if(!cargoRepository.findById(cargoId).isPresent()){
             throw new CargoException("Debe seleccionar al menos un cargo");
         }
         cargoRepository.deleteById(cargoId);
@@ -62,7 +51,7 @@ public class CargoService {
         List<CargoDto> cargosDTO = new ArrayList<>();
 
         if(listaCargos.isEmpty()){
-            //TODO realizar excepcion personalizada
+
             throw new CargoException("No hay cargos en el sistema");
         }
 
@@ -73,19 +62,17 @@ public class CargoService {
         return cargosDTO;
     }
 
-    //TODO METODO PARA CONSULTAR POR ID
     public CargoDto findById(Long cargoId) throws CargoException{
-        Cargo cargoValidacionId = cargoRepository.findById(cargoId).orElse(null);
-        if(cargoValidacionId == null){
+
+        if(!cargoRepository.findById(cargoId).isPresent()){
             throw new CargoException("Cargo no existe en el sistema");
         }
         return cargoMapper.cargoModelToCargoDTO(cargoRepository.findById(cargoId).get());
     }
 
-    //TODO METODO PARA CONSULTAR POR DESCRIPCION
     public CargoDto findByNombre(String nombreCargo) throws CargoException{
-        Cargo cargoValidacionNombre = cargoRepository.findCargoByNombreCargo(nombreCargo).orElse(null);
-        if(cargoValidacionNombre == null){
+
+        if(cargoRepository.findCargoByNombreCargo(nombreCargo).isPresent()){
             throw new CargoException("El campo nombre se encuentra vacio o no existe en el sistema");
         }
         return cargoMapper.cargoModelToCargoDTO(cargoRepository.findCargoByNombreCargo(nombreCargo).get());
