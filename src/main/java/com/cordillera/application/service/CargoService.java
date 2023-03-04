@@ -2,7 +2,9 @@ package com.cordillera.application.service;
 
 import com.cordillera.application.mapper.CargoMapper;
 import com.cordillera.application.repository.jpa.CargoRepository;
+import com.cordillera.application.resources.MensajesErrores;
 import com.cordillera.domain.dto.CargoDto;
+import com.cordillera.domain.dto.CargoPostDto;
 import com.cordillera.domain.excepcion.CargoException;
 import com.cordillera.domain.models.Cargo;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,21 @@ public class CargoService {
     private final CargoRepository cargoRepository;
 
     //Metodo para guardar un cargo
-    public CargoDto saveCargo(CargoDto cargoDto) throws CargoException{
+    public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
-        if(!cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).isPresent()){
-            throw new CargoException("Cargo ya existe en el sistema");
+        if(cargoRepository.findCargoByNombreCargo(cargoPostDto.getNombreCargo()).isPresent()){
+            throw new CargoException(MensajesErrores.CARGO_YA_REGISTRADO.getValue());
         }
-        return cargoMapper.cargoModelToCargoDTO(cargoRepository.save(cargoMapper.cargoDTOToCargoModel(cargoDto)));
+
+        Cargo cargo = new Cargo();
+        try {
+            cargo.setNombreCargo(cargoPostDto.getNombreCargo());
+            cargo.setIdCargo(null);
+            cargo = cargoRepository.save(cargo);
+        }catch (Exception e){
+            throw new CargoException(e.getMessage());
+        }
+        return cargoMapper.cargoModelToCargoDTO(cargo);
     }
 
     //Metodo para actualizar un cargo

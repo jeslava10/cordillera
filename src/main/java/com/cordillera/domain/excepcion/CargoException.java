@@ -1,17 +1,11 @@
 package com.cordillera.domain.excepcion;
 
-public class CargoException extends RuntimeException{
-    private static final long serialVersionUID = 1564668989254L;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-    public CargoException() {
-    }
+@ResponseStatus
+public class CargoException extends RuntimeException{
 
     public CargoException(String message) {
         super(message);
-    }
-
-    @Override
-    public String toString() {
-        return "CargoNofoundException [message=" + this.getMessage() + "]";
     }
 }
