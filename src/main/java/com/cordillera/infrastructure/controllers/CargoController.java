@@ -22,9 +22,9 @@ public class CargoController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity borrarCargo(@PathVariable Long id){
+    public ResponseEntity<Void> borrarCargo(@PathVariable Long id){
         cargoService.deleteCargo(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping()
