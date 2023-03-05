@@ -37,23 +37,39 @@ public class CargoController {
     }
 
     @PutMapping()
-    public ResponseEntity<CargoDto> actualizarCargo(@RequestBody CargoDto cargoDto){
-        return new ResponseEntity<>(cargoService.updateCargo(cargoDto), HttpStatus.OK);
+    public ResponseEntity<ControllerResponseDto<CargoDto>> actualizarCargo(@RequestBody CargoDto cargoDto){
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.updateCargo(cargoDto)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
+        }
     }
 
     @GetMapping()
-    public ResponseEntity<List<CargoDto>> listarCargos(){
-        return ResponseEntity.ok(cargoService.listCargo());
+    public ResponseEntity<ControllerResponseDto<List<CargoDto>>> listarCargos(){
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.listCargo()));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
+        }
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CargoDto> porId(@PathVariable Long id){
-        return ResponseEntity.ok(cargoService.findById(id));
+    public ResponseEntity<ControllerResponseDto<CargoDto>> porId(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.findById(id)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
+        }
     }
 
     @GetMapping(path = "/{nombre}")
-    public ResponseEntity<CargoDto> porNombre(@PathVariable String nombre){
-        return ResponseEntity.ok(cargoService.findByNombre(nombre));
+    public ResponseEntity<ControllerResponseDto<CargoDto>> porNombre(@PathVariable String nombre){
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.findByNombre(nombre)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
+        }
     }
 
 }

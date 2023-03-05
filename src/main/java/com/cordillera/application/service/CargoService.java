@@ -23,8 +23,10 @@ public class CargoService {
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
-        if(cargoRepository.findCargoByNombreCargo(cargoPostDto.getNombreCargo()).isPresent()){
+        if(cargoRepository.findCargoByNombreCargo(cargoPostDto.getNombreCargo()).isPresent() && cargoPostDto.getNombreCargo().equalsIgnoreCase(cargoRepository.findCargoByNombreCargo(cargoPostDto.getNombreCargo()).get().getNombreCargo())){
             throw new CargoException(MensajesErrores.CARGO_YA_REGISTRADO.getValue());
+        } else if (cargoPostDto.getNombreCargo() == null) {
+            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
         }
 
         Cargo cargo = new Cargo();
@@ -41,51 +43,95 @@ public class CargoService {
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto) throws CargoException{
 
-        if(!cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).isPresent()){
-            throw new CargoException("No se puede tener cargos sin nombre");
+        if(cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).isPresent() && cargoDto.getNombreCargo().equalsIgnoreCase(cargoRepository.findCargoByNombreCargo(cargoDto.getNombreCargo()).get().getNombreCargo())){
+            throw new CargoException(MensajesErrores.CARGO_ACTUALIZAR_YA_EXISTE.getValue());
+        }else if (cargoDto.getNombreCargo() == null) {
+            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
         }
-        return cargoMapper.cargoModelToCargoDTO(cargoRepository.save(cargoMapper.cargoDTOToCargoModel(cargoDto)));
+
+        Cargo cargo = new Cargo();
+        try {
+            cargo.setNombreCargo(cargoDto.getNombreCargo());
+            cargo.setIdCargo(cargoDto.getIdCargo());
+            cargo = cargoRepository.save(cargo);
+        } catch (Exception e){
+            throw new CargoException(e.getMessage());
+        }
+        return cargoMapper.cargoModelToCargoDTO(cargo);
     }
 
     //Metodo para eliminar un cargo
     public void deleteCargo(Long cargoId) throws CargoException{
 
         if(!cargoRepository.findById(cargoId).isPresent()){
-            throw new CargoException("Debe seleccionar al menos un cargo");
+            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
+        } else if (cargoId <= 0){
+            StringBuilder sb = new StringBuilder();
+            sb.append(MensajesErrores.ID_CERO.getValue())
+                    .append(" ó ")
+                    .append(MensajesErrores.ID_NEGATIVO.getValue());
+            throw new CargoException(sb.toString());
         }
-        cargoRepository.deleteById(cargoId);
+
+        try {
+            cargoRepository.deleteById(cargoId);
+        } catch (Exception e){
+            throw new CargoException(e.getMessage());
+        }
     }
 
     //Metodo para listar un cargo
     public List<CargoDto> listCargo() throws CargoException{
         List<Cargo> listaCargos = cargoRepository.findAll();
-        List<CargoDto> cargosDTO = new ArrayList<>();
 
         if(listaCargos.isEmpty()){
-
-            throw new CargoException("No hay cargos en el sistema");
+            throw new CargoException(MensajesErrores.CARGOS_LISTA_VACIA.getValue());
         }
 
-        for(Cargo lCargo: listaCargos){
-            cargosDTO.add(cargoMapper.cargoModelToCargoDTO(lCargo));
+        List<CargoDto> cargosDTO = new ArrayList<>();
+        try {
+            for(Cargo lCargo : listaCargos){
+                cargosDTO.add(cargoMapper.cargoModelToCargoDTO(lCargo));
+            }
+        }catch (Exception e){
+            throw new CargoException(e.getMessage());
         }
-
         return cargosDTO;
     }
 
     public CargoDto findById(Long cargoId) throws CargoException{
 
         if(!cargoRepository.findById(cargoId).isPresent()){
-            throw new CargoException("Cargo no existe en el sistema");
+            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
+        }else if (cargoId <= 0){
+            StringBuilder sb = new StringBuilder();
+            sb.append(MensajesErrores.ID_CERO.getValue())
+                    .append(" ó ")
+                    .append(MensajesErrores.ID_NEGATIVO.getValue());
+            throw new CargoException(sb.toString());
         }
-        return cargoMapper.cargoModelToCargoDTO(cargoRepository.findById(cargoId).get());
+
+        Cargo cargo = new Cargo();
+        try {
+            cargo = cargoRepository.findById(cargoId).get();
+        } catch (Exception e){
+            throw new CargoException(e.getMessage());
+        }
+        return cargoMapper.cargoModelToCargoDTO(cargo);
     }
 
     public CargoDto findByNombre(String nombreCargo) throws CargoException{
 
-        if(cargoRepository.findCargoByNombreCargo(nombreCargo).isPresent()){
-            throw new CargoException("El campo nombre se encuentra vacio o no existe en el sistema");
+        if(!cargoRepository.findCargoByNombreCargo(nombreCargo).isPresent() && nombreCargo.equalsIgnoreCase(cargoRepository.findCargoByNombreCargo(nombreCargo).get().getNombreCargo())){
+            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
         }
-        return cargoMapper.cargoModelToCargoDTO(cargoRepository.findCargoByNombreCargo(nombreCargo).get());
+
+        Cargo cargo = new Cargo();
+        try {
+            cargo = cargoRepository.findCargoByNombreCargo(nombreCargo).get();
+        } catch (Exception e){
+            throw new CargoException(e.getMessage());
+        }
+        return cargoMapper.cargoModelToCargoDTO(cargo);
     }
 }
