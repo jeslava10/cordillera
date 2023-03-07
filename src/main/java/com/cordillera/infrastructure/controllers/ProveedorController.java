@@ -4,6 +4,7 @@ import com.cordillera.application.serviceimpl.ProveedorService;
 import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.dto.ProveedorDto;
 import com.cordillera.domain.dto.ProveedorPostDto;
+import com.cordillera.domain.excepcion.MesaException;
 import com.cordillera.domain.excepcion.ProveedorException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,6 +46,24 @@ public class ProveedorController {
         try{
             proveedorService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ProveedorException pe) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
+        }
+    }
+
+    @GetMapping()
+    public ResponseEntity<ControllerResponseDto<List<ProveedorDto>>> findAll() {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(proveedorService.findAll()));
+        } catch (ProveedorException pe) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
+        }
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ControllerResponseDto<ProveedorDto>> findById(Long id) {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(proveedorService.findById(id)));
         } catch (ProveedorException pe) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
         }
