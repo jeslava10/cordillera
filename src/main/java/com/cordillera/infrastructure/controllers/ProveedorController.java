@@ -1,8 +1,10 @@
 package com.cordillera.infrastructure.controllers;
 
-import com.cordillera.application.service.MesaService;
-import com.cordillera.application.service.ProveedorService;
+import com.cordillera.application.serviceimpl.ProveedorService;
+import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.dto.ProveedorDto;
+import com.cordillera.domain.dto.ProveedorPostDto;
+import com.cordillera.domain.excepcion.ProveedorException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,32 +21,31 @@ import java.math.BigDecimal;
 public class ProveedorController {
     private final ProveedorService proveedorService;
 
-    @PostMapping("provvedor")
-    public ResponseEntity<?> saveProveedor(@RequestBody @Valid ProveedorDto proveedorDto){
+    @PostMapping
+    public ResponseEntity<ControllerResponseDto<ProveedorDto>> save(@RequestBody @Valid ProveedorPostDto proveedorPostDto){
         try{
-            return new ResponseEntity<>(proveedorService.saveProveedor(proveedorDto),
-                    HttpStatus.CREATED);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(proveedorService.save(proveedorPostDto)));
+        }catch (ProveedorException pe){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
         }
     }
 
-    @PutMapping("proveedor")
-    public ResponseEntity<?> updateProveedor(@RequestBody ProveedorDto proveedorDto){
+    @PutMapping
+    public ResponseEntity<ControllerResponseDto<ProveedorDto>> update(@RequestBody ProveedorDto proveedorDto){
         try{
-            return new ResponseEntity<>(proveedorService.updateProveedor(proveedorDto), HttpStatus.OK);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(proveedorService.update(proveedorDto)));
+        }catch (ProveedorException pe){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
         }
     }
 
-    @DeleteMapping(path = "mesa/{numeromesa}")
-    public ResponseEntity<?> deleteProveedor(BigDecimal idproveedor){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<ControllerResponseDto<ProveedorDto>> delete(Long id){
         try{
-            proveedorService.deleteProveedor(idproveedor);
+            proveedorService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+        } catch (ProveedorException pe) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(pe));
         }
     }
 

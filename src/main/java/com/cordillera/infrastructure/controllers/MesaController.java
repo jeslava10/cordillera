@@ -1,25 +1,25 @@
 package com.cordillera.infrastructure.controllers;
 
-import com.cordillera.application.service.MesaService;
+import com.cordillera.application.serviceimpl.MesaService;
 import com.cordillera.domain.dto.MesaDto;
+import com.cordillera.domain.dto.MesaPostDto;
 import com.cordillera.domain.excepcion.MesaException;
-import com.cordillera.domain.excepcion.NofoundException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
+import java.util.List;
 
 
-
-@Tag(name="mesa")
+@Tag(name = "mesa")
 @RequiredArgsConstructor
 @RestController("mesa")
 public class MesaController {
@@ -28,36 +28,48 @@ public class MesaController {
 
 
     @PostMapping()
-    public ResponseEntity<?> grabarMesa(@RequestBody @Valid MesaDto mesaDto) throws MesaException , NofoundException {
-        try{
-            return new ResponseEntity<>(mesaService.saveMesa(mesaDto),
-                    HttpStatus.CREATED);
-        }catch (MesaException me){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(me.getMessage());
-        }catch (NofoundException nfe){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(nfe.getMessage());
+    public ResponseEntity<ControllerResponseDto<MesaDto>> save(@RequestBody @Valid MesaPostDto mesaPostDto) throws MesaException {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.save(mesaPostDto)));
+        } catch (MesaException me) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
         }
     }
 
     @PutMapping()
-    public ResponseEntity<?> actalizarMesa(@RequestBody MesaDto mesaDto) throws  MesaException  , NofoundException {
-        try{
-            return new ResponseEntity<>(mesaService.actulizarMesa(mesaDto), HttpStatus.OK);
-        }catch (MesaException me){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(me.getMessage());
-        }catch (NofoundException nfe){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(nfe.getMessage());
+    public ResponseEntity<ControllerResponseDto<MesaDto>> update(@RequestBody MesaDto mesaDto) throws MesaException {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.update(mesaDto)));
+        } catch (MesaException me) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
         }
     }
 
-    @DeleteMapping(path = "/{numeromesa}")
-    public ResponseEntity<?> deleteMesa(BigDecimal numeromesa) throws Exception {
-        try{
-            mesaService.deleteMesa(numeromesa);
-            return ResponseEntity.status(HttpStatus.OK).build();
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<ControllerResponseDto<MesaDto>> delete(Long id) throws MesaException {
+        try {
+            mesaService.delete(id);
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(null));
+        } catch (MesaException me) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
         }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() +"\"}");
+    }
+
+    @GetMapping()
+    public ResponseEntity<ControllerResponseDto<List<MesaDto>>> findAll() {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.findAll()));
+        } catch (MesaException me) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
+        }
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<ControllerResponseDto<MesaDto>> findById(Long id) {
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.findById(id)));
+        } catch (MesaException me) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
         }
     }
 }

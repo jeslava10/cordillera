@@ -16,6 +16,6 @@ public class Mesa implements Serializable {
     private Long idMesa;
 
     @Column(name = "numeromesa")
-    private BigDecimal numeroMesa;
+    private Integer numeroMesa;
 
 }

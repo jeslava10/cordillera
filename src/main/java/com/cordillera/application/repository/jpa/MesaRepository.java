@@ -11,6 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface MesaRepository extends JpaRepository<Mesa, Long> {
-
-    Optional<Mesa> findByNumeroMesa(BigDecimal numeroMesa);
+    Optional<Mesa> findByNumeroMesa(Integer nroMesa);
 }

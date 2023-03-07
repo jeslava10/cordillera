@@ -5,12 +5,10 @@ import com.cordillera.domain.models.Mesa;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface MesaMapper {
-    MesaMapper INSTANCE = Mappers.getMapper(MesaMapper.class);
+    Mesa toModel(MesaDto mesaDto);
 
-    Mesa mesaDTOToMesaModel(MesaDto mesaDto);
-
-    MesaDto mesaModeloToMesaDTO(Mesa mesa);
+    MesaDto toDto(Mesa mesa);
 
 }

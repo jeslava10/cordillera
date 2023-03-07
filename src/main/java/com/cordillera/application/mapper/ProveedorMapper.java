@@ -1,17 +1,12 @@
 package com.cordillera.application.mapper;
 
 import com.cordillera.domain.dto.ProveedorDto;
+import com.cordillera.domain.dto.ProveedorPostDto;
 import com.cordillera.domain.models.Proveedor;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ProveedorMapper {
-    ProveedorMapper INSTANCE = Mappers.getMapper(ProveedorMapper.class);
-
-    Proveedor proveedorDTOToproveedorModel(ProveedorDto proveedorDto);
-
-    ProveedorDto provewedorModeloToProveedorDTO(Proveedor proveedor);
-
-
+    Proveedor toModel(ProveedorDto proveedorDto);
+    ProveedorDto toDto(Proveedor proveedor);
+    Proveedor toModel(ProveedorPostDto proveedorPostDto);
 }

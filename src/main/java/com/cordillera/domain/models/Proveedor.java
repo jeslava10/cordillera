@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -14,10 +16,15 @@ public class Proveedor {
     @Column(name = "idproveedor")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProveedor;
+    @NotNull
     private String nombre;
+    @NotNull
     private String apellido;
+    @NotNull
     private BigDecimal identificacion;
+    @NotNull
     private Integer telefono;
+    @Email
     private String correo;
 
 }

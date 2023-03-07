@@ -1,4 +1,4 @@
-package com.cordillera.application.service;
+package com.cordillera.application.serviceimpl;
 
 import com.cordillera.application.mapper.UserMapper;
 import com.cordillera.domain.dto.UserDto;
