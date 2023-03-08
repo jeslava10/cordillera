@@ -8,4 +8,6 @@ import javax.validation.constraints.NotNull;
 public class CargoPostDto {
     @NotNull
     private String nombreCargo;
+    @NotNull
+    private Long codigoCargo;
 }

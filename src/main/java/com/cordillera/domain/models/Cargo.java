@@ -23,6 +23,8 @@ public class Cargo {
     private Long idCargo;
     @Column(name = "descripcion")
     private String nombreCargo;
+    @Column(name = "codigocargo")
+    private Long codigoCargo;
 
     @Override
     public boolean equals(Object o) {

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/cargos")
+@RequestMapping(value = "/cargos")
 public class CargoController {
 
     private final CargoService cargoService;
@@ -21,6 +21,15 @@ public class CargoController {
     public ResponseEntity<ControllerResponseDto<CargoDto>> guardarCargo(@RequestBody CargoPostDto cargoPostDto){
         try {
             return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.saveCargo(cargoPostDto)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
+        }
+    }
+
+    @PutMapping()
+    public ResponseEntity<ControllerResponseDto<CargoDto>> actualizarCargo(@RequestBody CargoDto cargoDto){
+        try {
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.updateCargo(cargoDto)));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
         }
@@ -36,15 +45,6 @@ public class CargoController {
         }
     }
 
-    @PutMapping()
-    public ResponseEntity<ControllerResponseDto<CargoDto>> actualizarCargo(@RequestBody CargoDto cargoDto){
-        try {
-            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.updateCargo(cargoDto)));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
-        }
-    }
-
     @GetMapping()
     public ResponseEntity<ControllerResponseDto<List<CargoDto>>> listarCargos(){
         try {
@@ -54,10 +54,10 @@ public class CargoController {
         }
     }
 
-    @GetMapping(path = "/{id}")
-    public ResponseEntity<ControllerResponseDto<CargoDto>> porId(@PathVariable Long id){
+    @GetMapping(path = "/find-by-codigo/{codigoCargo}")
+    public ResponseEntity<ControllerResponseDto<CargoDto>> porId(@PathVariable Long codigoCargo){
         try {
-            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.findById(id)));
+            return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.findByCodigo(codigoCargo)));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(e));
         }
