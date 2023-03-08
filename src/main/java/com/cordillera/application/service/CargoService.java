@@ -19,14 +19,14 @@ public class CargoService {
 
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
-    private static final String letras = "^[a-zA-Z]*$";
+    private static final String pattern = "^[a-zA-Z]*$";
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
         if (cargoPostDto.getNombreCargo().isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoPostDto.getNombreCargo().matches(letras)) {
+        } else if (!cargoPostDto.getNombreCargo().matches(pattern)) {
             throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
         } else if (cargoPostDto.getCodigoCargo() == null || cargoPostDto.getCodigoCargo() <= 0) {
             StringBuilder sb = new StringBuilder();
@@ -59,7 +59,7 @@ public class CargoService {
 
         if (cargoDto.getNombreCargo().isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoDto.getNombreCargo().matches(letras)) {
+        } else if (!cargoDto.getNombreCargo().matches(pattern)) {
             throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
         } else if (cargoDto.getCodigoCargo() == null || cargoDto.getCodigoCargo() <= 0) {
             StringBuilder sb = new StringBuilder();
@@ -154,7 +154,7 @@ public class CargoService {
 
         if (nombreCargo.isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!nombreCargo.matches(letras)) {
+        } else if (!nombreCargo.matches(pattern)) {
             throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
         } else if(!cargoRepository.findCargoByNombreCargoContainsIgnoreCase(nombreCargo).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
