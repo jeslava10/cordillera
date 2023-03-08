@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface MesaMapper {
     Mesa toModel(MesaDto mesaDto);
-
     MesaDto toDto(Mesa mesa);
 
 }

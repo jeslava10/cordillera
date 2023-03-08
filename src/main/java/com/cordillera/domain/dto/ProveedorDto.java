@@ -10,5 +10,4 @@ import lombok.EqualsAndHashCode;
 public class ProveedorDto extends ProveedorPostDto {
     @Schema(description = "id unico de la mesa", example="0")
     private Long idProveedor;
-
 }

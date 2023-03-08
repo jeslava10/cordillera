@@ -26,6 +26,7 @@ import static com.cordillera.application.resources.MensajesErrores.MESA_NUMERO_N
 @Service
 @RequiredArgsConstructor
 public class MesaService implements BaseService<MesaDto, MesaPostDto> {
+    @Autowired
     private final MesaMapper mesaMapper;
     @Autowired
     private MesaRepository mesaRepository;

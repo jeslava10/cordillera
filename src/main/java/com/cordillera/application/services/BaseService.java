@@ -7,8 +7,5 @@ public interface BaseService <D, P>{
     void delete(Long id);
     List<D> findAll();
     D findById(Long id);
-
     D update(D d);
-
-
 }

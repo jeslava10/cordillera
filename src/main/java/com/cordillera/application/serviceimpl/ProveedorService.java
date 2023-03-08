@@ -34,13 +34,10 @@ import static com.cordillera.application.resources.MensajesErrores.PRPVEEDOR_IDE
 @Service
 @RequiredArgsConstructor
 public class ProveedorService implements BaseService<ProveedorDto, ProveedorPostDto> {
-
+    @Autowired
     private final ProveedorMapper proveedorMapper;
     @Autowired
     private ProveedorRepository proveedorRepository;
-    @Autowired
-    private MesaRepository mesaRepository;
-
     @Override
     public ProveedorDto save(ProveedorPostDto proveedorPostDto) {
         if(proveedorRepository.findByIdentificacion(proveedorPostDto.getIdentificacion()).isPresent()){
