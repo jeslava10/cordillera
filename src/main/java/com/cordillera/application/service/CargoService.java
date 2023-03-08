@@ -19,7 +19,7 @@ public class CargoService {
 
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
-    private final String matches = "^[a-zA-Z]*$";
+    private static final String matches = "^[a-zA-Z]*$";
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
