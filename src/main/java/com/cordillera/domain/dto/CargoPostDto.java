@@ -9,5 +9,5 @@ public class CargoPostDto {
     @NotNull
     private String nombreCargo;
     @NotNull
-    private Long codigoCargo;
+    private String codigoCargo;
 }

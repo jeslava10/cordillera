@@ -55,7 +55,7 @@ public class CargoController {
     }
 
     @GetMapping(path = "/find-by-codigo/{codigoCargo}")
-    public ResponseEntity<ControllerResponseDto<CargoDto>> porId(@PathVariable Long codigoCargo){
+    public ResponseEntity<ControllerResponseDto<CargoDto>> porId(@PathVariable String codigoCargo){
         try {
             return ResponseEntity.ok(ControllerResponseDto.fromValid(cargoService.findByCodigo(codigoCargo)));
         } catch (Exception e){

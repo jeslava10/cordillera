@@ -20,24 +20,17 @@ public class CargoService {
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
     private static final String PATTERN = "^[a-zA-Z]*$";
+    private static final String PATTERN_CODE = "^[0-9]*$";
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
-        if (cargoPostDto.getNombreCargo().isBlank()) {
+        if (cargoPostDto.getNombreCargo().isBlank() || cargoPostDto.getCodigoCargo().isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoPostDto.getNombreCargo().matches(PATTERN)) {
+        } else if (!cargoPostDto.getNombreCargo().matches(PATTERN) || !cargoPostDto.getCodigoCargo().matches(PATTERN_CODE)) {
             throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if (cargoPostDto.getCodigoCargo() == null || cargoPostDto.getCodigoCargo() <= 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(MensajesErrores.MENSAJE_GENERICO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NULL.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_CERO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NEGATIVO.getValue());
-            throw new CargoException(sb.toString());
+        } else if (cargoPostDto.getCodigoCargo().isBlank()) {
+            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
         } else if(cargoRepository.findCargoByNombreCargoContainsIgnoreCase(cargoPostDto.getNombreCargo()).isPresent() || cargoRepository.findCargoByCodigoCargo(cargoPostDto.getCodigoCargo()).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_YA_REGISTRADO.getValue());
         }
@@ -57,20 +50,12 @@ public class CargoService {
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto) throws CargoException{
 
-        if (cargoDto.getNombreCargo().isBlank()) {
+        if (cargoDto.getNombreCargo().isBlank() || cargoDto.getCodigoCargo().isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoDto.getNombreCargo().matches(PATTERN)) {
+        } else if (!cargoDto.getNombreCargo().matches(PATTERN) || !cargoDto.getCodigoCargo().matches(PATTERN_CODE)) {
             throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if (cargoDto.getCodigoCargo() == null || cargoDto.getCodigoCargo() <= 0) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(MensajesErrores.MENSAJE_GENERICO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NULL.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_CERO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NEGATIVO.getValue());
-            throw new CargoException(sb.toString());
+        } else if (cargoDto.getCodigoCargo().isBlank()) {
+            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
         } else if(cargoRepository.findCargoByNombreCargoContainsIgnoreCase(cargoDto.getNombreCargo()).isPresent() || cargoRepository.findCargoByCodigoCargo(cargoDto.getCodigoCargo()).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_ACTUALIZAR_YA_EXISTE.getValue());
         }
@@ -90,7 +75,13 @@ public class CargoService {
     //Metodo para eliminar un cargo
     public void deleteCargo(Long cargoId) throws CargoException{
 
-        if(!cargoRepository.findById(cargoId).isPresent()){
+        if (cargoId <= 0){
+            StringBuilder sb = new StringBuilder();
+            sb.append(MensajesErrores.ID_CERO.getValue())
+                    .append(" ó ")
+                    .append(MensajesErrores.ID_NEGATIVO.getValue());
+            throw new CargoException(sb.toString());
+        } else if(!cargoRepository.findById(cargoId).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
         } else if (cargoId <= 0){
             StringBuilder sb = new StringBuilder();
@@ -126,18 +117,12 @@ public class CargoService {
         }
     }
 
-    public CargoDto findByCodigo(Long codigoCargo) throws CargoException{
+    public CargoDto findByCodigo(String codigoCargo) throws CargoException{
 
-        if (codigoCargo == null || codigoCargo <= 0){
-            StringBuilder sb = new StringBuilder();
-            sb.append(MensajesErrores.MENSAJE_GENERICO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NULL.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_CERO.getValue())
-                    .append("\n")
-                    .append(MensajesErrores.CODIGO_CARGO_NEGATIVO.getValue());
-            throw new CargoException(sb.toString());
+        if (codigoCargo.isBlank()) {
+            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
+        } else if (!codigoCargo.matches(PATTERN_CODE)) {
+            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
         } else if(!cargoRepository.findCargoByCodigoCargo(codigoCargo).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
         }

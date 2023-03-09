@@ -24,7 +24,7 @@ public class Cargo {
     @Column(name = "descripcion")
     private String nombreCargo;
     @Column(name = "codigocargo")
-    private Long codigoCargo;
+    private String codigoCargo;
 
     @Override
     public boolean equals(Object o) {

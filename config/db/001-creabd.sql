@@ -1,5 +1,5 @@
 create table tbmesa(idmesa serial primary key, numeroMesa numeric(10,0) not null);
-create table tbcargo(idcargo serial primary key,  descripcion char(40) not null);
+create table tbcargo(idcargo serial primary key,  descripcion char(40) not null, codigocargo char(10) not null);
 create table tbestado(idestado serial primary key, descripcion char(30) not null);
 create table tbformapago(idformapago serial primary key, descripcion char(30) not null);
 create table tbproveedor(idproveedor serial primary key,  nombre char(30) not null,  apellido char(30) not null,  identificacion numeric(10,0) not null,  telefono numeric(10,0) not null,  correo char(60) not null);
