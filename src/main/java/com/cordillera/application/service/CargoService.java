@@ -20,7 +20,7 @@ public class CargoService {
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
     private static final String PATTERN = "^[a-zA-Z]*$";
-    private static final String PATTERN_CODE = "^[0-9]*$";
+    private static final String PATTERN_CODE = "\\D";
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
@@ -83,12 +83,6 @@ public class CargoService {
             throw new CargoException(sb.toString());
         } else if(!cargoRepository.findById(cargoId).isPresent()){
             throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
-        } else if (cargoId <= 0){
-            StringBuilder sb = new StringBuilder();
-            sb.append(MensajesErrores.ID_CERO.getValue())
-                    .append(" ó ")
-                    .append(MensajesErrores.ID_NEGATIVO.getValue());
-            throw new CargoException(sb.toString());
         }
 
         try {
