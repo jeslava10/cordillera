@@ -2,6 +2,7 @@ package com.cordillera.application.serviceimpl;
 
 import com.cordillera.application.mapper.MesaMapper;
 import com.cordillera.application.repository.jpa.MesaRepository;
+import com.cordillera.application.service.MesaService;
 import com.cordillera.application.services.BaseService;
 import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.dto.MesaPostDto;
@@ -25,7 +26,7 @@ import static com.cordillera.application.resources.MensajesErrores.MESA_NUMERO_N
 
 @Service
 @RequiredArgsConstructor
-public class MesaService implements BaseService<MesaDto, MesaPostDto> {
+public class MesaServiceImpl implements MesaService {
     @Autowired
     private final MesaMapper mesaMapper;
     @Autowired

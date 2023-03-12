@@ -1,6 +1,6 @@
 package com.cordillera.infrastructure.controllers;
 
-import com.cordillera.application.serviceimpl.MesaService;
+import com.cordillera.application.serviceimpl.MesaServiceImpl;
 import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.dto.MesaPostDto;
 import com.cordillera.domain.excepcion.MesaException;
@@ -24,7 +24,7 @@ import java.util.List;
 @RestController("mesa")
 public class MesaController {
 
-    private final MesaService mesaService;
+    private final MesaServiceImpl mesaService;
 
 
     @PostMapping()

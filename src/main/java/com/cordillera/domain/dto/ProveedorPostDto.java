@@ -1,12 +1,11 @@
 package com.cordillera.domain.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Data
+
 public class ProveedorPostDto {
     @NotNull(message ="No se pueden dejar campos vacíos")
     @Schema(description = "Nombre del proveedor", example="Andres")
@@ -19,4 +18,55 @@ public class ProveedorPostDto {
     private Integer telefono;
     @Schema(description = "Correo electronico del proveedor", example="andres@coordillera.com")
     private String correo;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public BigDecimal getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(BigDecimal identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public Integer getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(Integer telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public ProveedorPostDto() {
+    }
+
+    public ProveedorPostDto(String nombre, String apellido, BigDecimal identificacion, Integer telefono, String correo) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.identificacion = identificacion;
+        this.telefono = telefono;
+        this.correo = correo;
+    }
 }

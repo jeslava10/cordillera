@@ -1,30 +1,21 @@
 package com.cordillera.application.serviceimpl;
 
 import com.cordillera.application.mapper.ProveedorMapper;
-import com.cordillera.application.repository.jpa.MesaRepository;
 import com.cordillera.application.repository.jpa.ProveedorRepository;
+import com.cordillera.application.service.ProveedorService;
 import com.cordillera.application.services.BaseService;
 import com.cordillera.domain.dto.ProveedorDto;
 import com.cordillera.domain.dto.ProveedorPostDto;
-import com.cordillera.domain.excepcion.MesaException;
-import com.cordillera.domain.excepcion.NofoundException;
 import com.cordillera.domain.excepcion.ProveedorException;
 import com.cordillera.domain.models.Proveedor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.cordillera.application.resources.MensajesErrores.MESA_NO_EXISTE_CONSULTAR;
-import static com.cordillera.application.resources.MensajesErrores.MESA_NO_EXISTE_DELETE;
-import static com.cordillera.application.resources.MensajesErrores.MESA_NO_EXISTE_UPDATE;
-import static com.cordillera.application.resources.MensajesErrores.MESA_NUMERO_EXISTE;
 import static com.cordillera.application.resources.MensajesErrores.PROVEEDORES_NO_EXISTEN;
 import static com.cordillera.application.resources.MensajesErrores.PROVEEDOR_NO_EXISTE_CONSULTAR;
 import static com.cordillera.application.resources.MensajesErrores.PROVEEDOR_NO_EXISTE_DELETE;
@@ -33,7 +24,7 @@ import static com.cordillera.application.resources.MensajesErrores.PRPVEEDOR_IDE
 
 @Service
 @RequiredArgsConstructor
-public class ProveedorService implements BaseService<ProveedorDto, ProveedorPostDto> {
+public class ProveedorServiceImpl implements ProveedorService {
     @Autowired
     private final ProveedorMapper proveedorMapper;
     @Autowired
