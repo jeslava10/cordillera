@@ -74,7 +74,6 @@ public class CargoService {
 
     //Metodo para eliminar un cargo
     public void deleteCargo(Long cargoId) throws CargoException{
-
         if (cargoId <= 0){
             StringBuilder sb = new StringBuilder();
             sb.append(MensajesErrores.ID_CERO.getValue())
@@ -95,11 +94,9 @@ public class CargoService {
     //Metodo para listar un cargo
     public List<CargoDto> listCargo() throws CargoException{
         List<Cargo> listaCargos = cargoRepository.findAll();
-
         if(listaCargos.isEmpty()){
             throw new CargoException(MensajesErrores.CARGOS_LISTA_VACIA.getValue());
         }
-
         List<CargoDto> cargosDTO = new ArrayList<>();
         try {
             for(Cargo lCargo : listaCargos){

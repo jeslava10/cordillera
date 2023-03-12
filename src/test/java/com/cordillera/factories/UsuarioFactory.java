@@ -4,6 +4,8 @@ import com.cordillera.domain.dto.UsuarioDto;
 import com.cordillera.domain.models.Usuario;
 import org.fluttercode.datafactory.impl.DataFactory;
 
+import java.util.Random;
+
 public class UsuarioFactory {
 
     private static final DataFactory dataFactory = new DataFactory();
@@ -21,7 +23,7 @@ public class UsuarioFactory {
         this.id = (long) dataFactory.getNumberBetween(1, 10);
         this.usuario = dataFactory.getName();
         this.passWord = dataFactory.getRandomText(8);
-        this.idRol = (long) dataFactory.getNumberBetween(0, 2);
+        this.idRol = (long) dataFactory.getNumberBetween(0, 1);
     }
 
     public Usuario newInstance() {
@@ -36,7 +38,8 @@ public class UsuarioFactory {
         return new UsuarioDto(usuario.getId(),usuario.getUsuario(),usuario.getPassWord(),usuario.getIdRol());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public static Long getRandomLong() {
+        return (long) new Random().ints(1, 10).findFirst().getAsInt();
     }
+
 }

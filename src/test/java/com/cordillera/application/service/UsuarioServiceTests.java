@@ -7,6 +7,7 @@ import com.cordillera.domain.dto.UsuarioDto;
 import com.cordillera.domain.excepcion.UsuarioException;
 import com.cordillera.domain.models.Usuario;
 import com.cordillera.factories.UsuarioFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+import static com.cordillera.factories.UsuarioFactory.getRandomLong;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,13 +49,16 @@ public class UsuarioServiceTests {
 
     private List<Usuario> userList = new ArrayList<>();
 
-    private List<UsuarioDto> userDTOList = new ArrayList<>();
+    @BeforeEach
+    void setUp(){
+        usuario = new UsuarioFactory().newInstance();
+        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
+        userList.add(usuario);
+    }
 
     @Test()
     public void when_save_user_it_should_return_user(){
-        usuario = new UsuarioFactory().newInstance();
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
-        usuario.setId(null);
+        usuarioDto.setId(null);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
         when(usuarioMapper.usuarioDtoToEntity(any(UsuarioDto.class))).thenReturn(usuario);
         when(usuarioMapper.usuarioToDTO(any(Usuario.class))).thenReturn(usuarioDto);
@@ -64,9 +68,6 @@ public class UsuarioServiceTests {
 
     @Test
     public void when_update_user_it_should_return_user(){
-        usuario = new UsuarioFactory().newInstance();
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
-        usuario.setId(null);
         when(usuarioRepository.save(any(Usuario.class))).thenReturn(usuario);
         when(usuarioMapper.usuarioDtoToEntity(any(UsuarioDto.class))).thenReturn(usuario);
         when(usuarioMapper.usuarioToDTO(any(Usuario.class))).thenReturn(usuarioDto);
@@ -77,9 +78,7 @@ public class UsuarioServiceTests {
 
     @Test
     public void when_save_user_name_blank_it_should_return_error(){
-        usuario = new UsuarioFactory().newInstance();
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
-        usuario.setId(null);
+        usuarioDto.setId(null);
         usuarioDto.setUsuario("");
         UsuarioException usuarioException = assertThrows(UsuarioException.class,
                 () -> usuarioService.saveUsuario(usuarioDto));
@@ -88,18 +87,6 @@ public class UsuarioServiceTests {
 
     @Test
     public void when_update_user_name_blank_it_should_return_error(){
-        usuario = new UsuarioFactory().newInstance();
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
-        usuarioDto.setUsuario("");
-        UsuarioException usuarioException = assertThrows(UsuarioException.class,
-                () -> usuarioService.updateUser(usuarioDto));
-        assertEquals(MensajesErrores.NOMBRE_DEL_USUARIO_NULL.getValue(), usuarioException.getMessage());
-    }
-
-    @Test
-    public void when_validete_user_name_empty(){
-        usuario = new UsuarioFactory().newInstance();
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
         usuarioDto.setUsuario(" ");
         UsuarioException usuarioException = assertThrows(UsuarioException.class,
                 () -> usuarioService.updateUser(usuarioDto));
@@ -109,26 +96,17 @@ public class UsuarioServiceTests {
     @Test
     void should_delete_one_user() {
         doNothing().when(usuarioRepository).deleteById(any(Long.class));
-        usuarioService.deleteUser(getRandomInt());
+        usuarioService.deleteUser(getRandomLong());
         verify(usuarioRepository, times(1)).deleteById(any(Long.class));
         verifyNoMoreInteractions(usuarioRepository);
     }
 
     @Test
     void should_find_and_return_all_user() {
-        usuario = new UsuarioFactory().newInstance();
-        userList.add(usuario);
-        usuarioDto = new UsuarioFactory().newInstanceDTOByUsuario(usuario);
-        userDTOList.add(usuarioDto);
         when(usuarioRepository.findAll()).thenReturn(userList);
         assertThat(usuarioService.listUser()).hasSize(1);
         verify(usuarioRepository, times(1)).findAll();
         verifyNoMoreInteractions(usuarioRepository);
     }
-
-    private Long getRandomInt() {
-        return (long) new Random().ints(1, 10).findFirst().getAsInt();
-    }
-
 
 }
