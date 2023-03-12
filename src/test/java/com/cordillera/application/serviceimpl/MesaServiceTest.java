@@ -18,18 +18,18 @@ class MesaServiceTest {
     }
 
     @Test
-    void delete() {
+    void deleteMesaTest() {
     }
 
     @Test
-    void findAll() {
+    void findAllMesaTest() {
     }
 
     @Test
-    void findById() {
+    void findByIdMesaTest() {
     }
 
     @Test
-    void update() {
+    void updateMesaTest() {
     }
 }
