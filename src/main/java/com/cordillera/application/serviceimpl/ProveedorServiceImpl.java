@@ -68,7 +68,7 @@ public class ProveedorServiceImpl implements ProveedorService {
             throw new ProveedorException(PROVEEDOR_NO_EXISTE_UPDATE.getValue());
         }
         Optional<Proveedor> proveedor = proveedorRepository.findByIdentificacion(proveedorDto.getIdentificacion());
-        if(proveedor.isPresent() && proveedor.get().getIdProveedor() != proveedorDto.getIdProveedor()){
+        if(proveedor.isPresent() && proveedor.get().getIdProveedor().equals(proveedorDto.getIdProveedor())){
             throw new ProveedorException(PRPVEEDOR_IDENTIFICACION_DUPLICADO.getValue());
         }
 

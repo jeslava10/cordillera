@@ -74,7 +74,7 @@ public class MesaServiceImpl implements MesaService {
             throw new MesaException(MESA_NO_EXISTE_UPDATE.getValue());
         }
         Optional<Mesa> mesa = mesaRepository.findByNumeroMesa(mesaDto.getNumeroMesa());
-        if(mesa.isPresent() && mesa.get().getIdMesa() != mesaDto.getIdMesa()) {
+        if(mesa.isPresent() && mesa.get().getIdMesa().equals(mesaDto.getIdMesa())) {
             throw new MesaException(MESA_NUMERO_EXISTE.getValue());
         }
         return mesaMapper.toDto(mesaRepository.save(mesaMapper.toModel(mesaDto)));
