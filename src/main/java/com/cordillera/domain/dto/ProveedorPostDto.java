@@ -15,7 +15,7 @@ public class ProveedorPostDto {
     @Schema(description = "Numero de cedula del proveedor", example="16755")
     private BigDecimal identificacion;
     @Schema(description = "Telefono del proveedor", example="6024865888")
-    private Integer telefono;
+    private Long telefono;
     @Schema(description = "Correo electronico del proveedor", example="andres@coordillera.com")
     private String correo;
 
@@ -43,11 +43,11 @@ public class ProveedorPostDto {
         this.identificacion = identificacion;
     }
 
-    public Integer getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 
@@ -62,7 +62,7 @@ public class ProveedorPostDto {
     public ProveedorPostDto() {
     }
 
-    public ProveedorPostDto(String nombre, String apellido, BigDecimal identificacion, Integer telefono, String correo) {
+    public ProveedorPostDto(String nombre, String apellido, BigDecimal identificacion, Long telefono, String correo) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.identificacion = identificacion;

@@ -6,6 +6,7 @@ import com.cordillera.domain.dto.MesaPostDto;
 import com.cordillera.domain.excepcion.MesaException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @Tag(name = "mesa")
 @RequestMapping(value = "/api/mesa/")
-@RestController("mesa")
+@RestController
 public class MesaController {
 
     private final MesaServiceImpl mesaService;
@@ -59,6 +60,8 @@ public class MesaController {
     @GetMapping()
     public ResponseEntity<ControllerResponseDto<List<MesaDto>>> findAll() {
         try {
+            var respuesta = mesaService.findAll();
+            var respuesta2 = ControllerResponseDto.fromValid(mesaService.findAll());
             return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.findAll()));
         } catch (MesaException me) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
@@ -74,6 +77,7 @@ public class MesaController {
         }
     }
 
+    @Autowired
     public MesaController(MesaServiceImpl mesaService) {
         this.mesaService = mesaService;
     }

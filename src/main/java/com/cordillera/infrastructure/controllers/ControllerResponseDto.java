@@ -1,11 +1,6 @@
 package com.cordillera.infrastructure.controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ControllerResponseDto<T> {
     private String error;
@@ -21,5 +16,29 @@ public class ControllerResponseDto<T> {
 
     public static <T> ControllerResponseDto<T> fromValid(T t){
         return new ControllerResponseDto<>(null, t);
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public ControllerResponseDto() {
+    }
+
+    public ControllerResponseDto(String error, T data) {
+        this.error = error;
+        this.data = data;
     }
 }

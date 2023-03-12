@@ -3,12 +3,10 @@ package com.cordillera.application.serviceimpl;
 import com.cordillera.application.mapper.MesaMapper;
 import com.cordillera.application.repository.jpa.MesaRepository;
 import com.cordillera.application.service.MesaService;
-import com.cordillera.application.services.BaseService;
 import com.cordillera.domain.dto.MesaDto;
 import com.cordillera.domain.dto.MesaPostDto;
 import com.cordillera.domain.excepcion.MesaException;
 import com.cordillera.domain.models.Mesa;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +23,8 @@ import static com.cordillera.application.resources.MensajesErrores.MESA_NUMERO_N
 
 
 @Service
-@RequiredArgsConstructor
 public class MesaServiceImpl implements MesaService {
-    @Autowired
     private final MesaMapper mesaMapper;
-    @Autowired
     private MesaRepository mesaRepository;
     @Override
     public MesaDto save(MesaPostDto mesaPostDto) {
@@ -40,8 +35,8 @@ public class MesaServiceImpl implements MesaService {
             throw new MesaException(MESA_NUMERO_NO_VALIDO.getValue());
         }
         Mesa mesa = new Mesa();
-        mesa.setNumeroMesa(mesa.getNumeroMesa());
-        return mesaMapper.toDto(mesa);
+        mesa.setNumeroMesa(mesaPostDto.getNumeroMesa());
+        return mesaMapper.toDto(mesaRepository.save(mesa));
      }
     @Override
     public void delete(Long id) {
@@ -78,5 +73,11 @@ public class MesaServiceImpl implements MesaService {
             throw new MesaException(MESA_NUMERO_EXISTE.getValue());
         }
         return mesaMapper.toDto(mesaRepository.save(mesaMapper.toModel(mesaDto)));
+    }
+
+    @Autowired
+    public MesaServiceImpl(MesaMapper mesaMapper, MesaRepository mesaRepository) {
+        this.mesaMapper = mesaMapper;
+        this.mesaRepository = mesaRepository;
     }
 }

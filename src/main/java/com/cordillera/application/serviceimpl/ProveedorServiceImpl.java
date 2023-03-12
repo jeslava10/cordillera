@@ -23,12 +23,9 @@ import static com.cordillera.application.resources.MensajesErrores.PROVEEDOR_NO_
 import static com.cordillera.application.resources.MensajesErrores.PRPVEEDOR_IDENTIFICACION_DUPLICADO;
 
 @Service
-@RequiredArgsConstructor
 public class ProveedorServiceImpl implements ProveedorService {
-    @Autowired
     private final ProveedorMapper proveedorMapper;
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+    private final ProveedorRepository proveedorRepository;
     @Override
     public ProveedorDto save(ProveedorPostDto proveedorPostDto) {
         if(proveedorRepository.findByIdentificacion(proveedorPostDto.getIdentificacion()).isPresent()){
@@ -73,5 +70,10 @@ public class ProveedorServiceImpl implements ProveedorService {
         }
 
         return proveedorMapper.toDto(proveedorRepository.save(proveedorMapper.toModel(proveedorDto)));
+    }
+    @Autowired
+    public ProveedorServiceImpl(ProveedorMapper proveedorMapper, ProveedorRepository proveedorRepository) {
+        this.proveedorMapper = proveedorMapper;
+        this.proveedorRepository = proveedorRepository;
     }
 }
