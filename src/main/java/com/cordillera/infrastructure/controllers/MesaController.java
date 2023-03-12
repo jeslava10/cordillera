@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -20,7 +21,7 @@ import java.util.List;
 
 
 @Tag(name = "mesa")
-@RequiredArgsConstructor
+@RequestMapping(value = "/api/mesa/")
 @RestController("mesa")
 public class MesaController {
 
@@ -71,5 +72,9 @@ public class MesaController {
         } catch (MesaException me) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
         }
+    }
+
+    public MesaController(MesaServiceImpl mesaService) {
+        this.mesaService = mesaService;
     }
 }

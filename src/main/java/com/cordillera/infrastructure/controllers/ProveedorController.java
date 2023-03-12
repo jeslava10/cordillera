@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/")
+@RequestMapping(value = "/api/proveedor/")
 @Tag(name="proveedor")
 public class ProveedorController {
     private final ProveedorServiceImpl proveedorService;
@@ -66,4 +65,7 @@ public class ProveedorController {
         }
     }
 
+    public ProveedorController(ProveedorServiceImpl proveedorService) {
+        this.proveedorService = proveedorService;
+    }
 }
