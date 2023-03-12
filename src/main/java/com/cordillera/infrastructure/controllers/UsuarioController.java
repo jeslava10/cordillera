@@ -1,7 +1,7 @@
 package com.cordillera.infrastructure.controllers;
 
 import com.cordillera.application.service.UserService;
-import com.cordillera.domain.dto.UserDto;
+import com.cordillera.domain.dto.UsuarioDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @Tag(name="User")
-public class UserController {
+public class UsuarioController {
 
   private final UserService userService;
 
@@ -23,8 +23,8 @@ public class UserController {
           operationId = "saveUser"
   )
     @PostMapping("users")
-     public ResponseEntity<UserDto> saveUser(@RequestBody UserDto userDto) {
-   return new ResponseEntity<>(userService.saveUser(userDto),
+     public ResponseEntity<UsuarioDto> saveUser(@RequestBody UsuarioDto usuarioDto) {
+   return new ResponseEntity<>(userService.saveUser(usuarioDto),
        HttpStatus.CREATED);
   }
 

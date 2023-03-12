@@ -1,6 +1,5 @@
 package com.cordillera.domain.models;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

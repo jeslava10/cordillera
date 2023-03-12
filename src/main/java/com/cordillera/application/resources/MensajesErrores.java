@@ -12,7 +12,9 @@ public enum MensajesErrores {
     ID_NEGATIVO ("El id no puede ser negativo"),
     CODIGO_CARGO_NULL("El codigo de cargo no puede estar vacio"),
     CODIGO_CARGO_CERO("El codigo de cargo no puede ser cero"),
-    CODIGO_CARGO_NEGATIVO("El codigo de cargo no puede ser negativo");
+    CODIGO_CARGO_NEGATIVO("El codigo de cargo no puede ser negativo"),
+
+    NOMBRE_DEL_USUARIO_NULL("El nombre del usuario es requerido ");
     private String value;
     MensajesErrores(String value) {
         this.value = value;
