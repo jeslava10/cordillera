@@ -1,10 +1,7 @@
 package com.cordillera.domain.models;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,35 +9,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
+import java.io.Serializable;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
 @Table(name = "tbcargo")
-public class Cargo {
+@NoArgsConstructor
+public @Data class Cargo implements Serializable {
 
     @Id
     @Column(name = "idcargo")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCargo;
+
     @Column(name = "descripcion")
     private String nombreCargo;
+
     @Column(name = "codigocargo")
     private String codigoCargo;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Cargo cargo = (Cargo) o;
-        return idCargo != null && Objects.equals(idCargo, cargo.idCargo);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

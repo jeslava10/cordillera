@@ -7,7 +7,6 @@ import com.cordillera.domain.excepcion.NoFoundException;
 import com.cordillera.domain.excepcion.ProveedorException;
 import com.cordillera.domain.models.Proveedor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -19,8 +18,8 @@ import java.util.Collections;
 public class ProveedorService {
 
     private final ProveedorMapper proveedorMapper;
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+
+    private final ProveedorRepository proveedorRepository;
 
     public ProveedorDto saveProveedor(ProveedorDto proveedorDto) throws ProveedorException {
         Proveedor proveedorVal = proveedorRepository.findByIdentificacion(proveedorDto.getIdentificacion()).orElse(null);

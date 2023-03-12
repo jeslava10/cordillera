@@ -15,14 +15,18 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
+
 compileJava {
 	options.compilerArgs += [
+			'-Amapstruct.defaultComponentModel=spring',
 			'-Amapstruct.defaultComponentModel=spring'
 	]
 }
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
 }
 
 jacoco {
@@ -31,7 +35,7 @@ jacoco {
 
 
 dependencies {
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -41,22 +45,19 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation  'org.junit.platform:junit-platform-launcher:1.9.2'
+	testImplementation  'org.junit.vintage:junit-vintage-engine:5.9.2'
+	implementation 'org.fluttercode.datafactory:datafactory:0.8'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-compileJava {
-	options.compilerArgs += [
-			'-Amapstruct.defaultComponentModel=spring'
-	]
-}
-
-test {
 	finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
@@ -67,6 +68,11 @@ jacocoTestReport {
 		html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
 	}
 }
+
+test {
+	finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
 
 
 

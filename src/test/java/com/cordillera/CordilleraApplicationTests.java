@@ -10,4 +10,9 @@ class CordilleraApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void main() {
+		CordilleraApplication.main(new String[] {});
+	}
+
 }

@@ -1,9 +1,10 @@
 package com.cordillera.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-public class UsuarioDto {
+@AllArgsConstructor
+public @Data class UsuarioDto {
 
 	private Long id;
 
