@@ -60,8 +60,6 @@ public class MesaController {
     @GetMapping()
     public ResponseEntity<ControllerResponseDto<List<MesaDto>>> findAll() {
         try {
-            var respuesta = mesaService.findAll();
-            var respuesta2 = ControllerResponseDto.fromValid(mesaService.findAll());
             return ResponseEntity.ok(ControllerResponseDto.fromValid(mesaService.findAll()));
         } catch (MesaException me) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ControllerResponseDto.fromError(me));
