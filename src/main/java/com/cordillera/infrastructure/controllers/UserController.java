@@ -1,6 +1,6 @@
 package com.cordillera.infrastructure.controllers;
 
-import com.cordillera.application.service.UserService;
+import com.cordillera.application.serviceimpl.UserService;
 import com.cordillera.domain.dto.UserDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
