@@ -7,33 +7,29 @@ import com.cordillera.domain.dto.CargoDto;
 import com.cordillera.domain.dto.CargoPostDto;
 import com.cordillera.domain.excepcion.CargoException;
 import com.cordillera.domain.models.Cargo;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class CargoService {
 
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
     private static final String PATTERN = "^[a-zA-Z]*$";
-    private static final String PATTERN_CODE = "\\D";
+    private static final String PATTERN_CODE = "^[0-9]*$";
+
+    public CargoService(CargoMapper cargoMapper, CargoRepository cargoRepository) {
+        this.cargoMapper = cargoMapper;
+        this.cargoRepository = cargoRepository;
+    }
 
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
-        if (cargoPostDto.getNombreCargo().isBlank() || cargoPostDto.getCodigoCargo().isBlank()) {
-            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoPostDto.getNombreCargo().matches(PATTERN) || !cargoPostDto.getCodigoCargo().matches(PATTERN_CODE)) {
-            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if (cargoPostDto.getCodigoCargo().isBlank()) {
-            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
-        } else if(cargoRepository.findCargoByNombreCargoContainsIgnoreCase(cargoPostDto.getNombreCargo()).isPresent() || cargoRepository.findCargoByCodigoCargo(cargoPostDto.getCodigoCargo()).isPresent()){
-            throw new CargoException(MensajesErrores.CARGO_YA_REGISTRADO.getValue());
-        }
+        ValidaDatos(cargoPostDto);
 
         Cargo cargo = new Cargo();
         try {
@@ -50,15 +46,7 @@ public class CargoService {
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto) throws CargoException{
 
-        if (cargoDto.getNombreCargo().isBlank() || cargoDto.getCodigoCargo().isBlank()) {
-            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!cargoDto.getNombreCargo().matches(PATTERN) || !cargoDto.getCodigoCargo().matches(PATTERN_CODE)) {
-            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if (cargoDto.getCodigoCargo().isBlank()) {
-            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
-        } else if(cargoRepository.findCargoByNombreCargoContainsIgnoreCase(cargoDto.getNombreCargo()).isPresent() || cargoRepository.findCargoByCodigoCargo(cargoDto.getCodigoCargo()).isPresent()){
-            throw new CargoException(MensajesErrores.CARGO_ACTUALIZAR_YA_EXISTE.getValue());
-        }
+        ValidaDatos(cargoDto);
 
         try {
             Cargo cargo = new Cargo();
@@ -113,13 +101,7 @@ public class CargoService {
 
     public CargoDto findByCodigo(String codigoCargo) throws CargoException{
 
-        if (codigoCargo.isBlank()) {
-            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
-        } else if (!codigoCargo.matches(PATTERN_CODE)) {
-            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if(!cargoRepository.findCargoByCodigoCargo(codigoCargo).isPresent()){
-            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
-        }
+        validaDatoString(codigoCargo);
 
         try {
             Cargo cargo = cargoRepository.findCargoByCodigoCargo(codigoCargo).get();
@@ -131,19 +113,37 @@ public class CargoService {
 
     public CargoDto findByNombre(String nombreCargo) throws CargoException{
 
-        if (nombreCargo.isBlank()) {
-            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
-        } else if (!nombreCargo.matches(PATTERN)) {
-            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS.getValue());
-        } else if(!cargoRepository.findCargoByNombreCargoContainsIgnoreCase(nombreCargo).isPresent()){
-            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
-        }
+        validaDatoString(nombreCargo);
 
         try {
-            Cargo cargo = cargoRepository.findCargoByNombreCargoContainsIgnoreCase(nombreCargo).get();
+            Cargo cargo = cargoRepository.findCargoByNombreCargoEqualsIgnoreCase(nombreCargo).get();
             return cargoMapper.cargoModelToCargoDTO(cargo);
         } catch (Exception e){
             throw new CargoException(e.getMessage());
+        }
+    }
+
+    private void ValidaDatos(CargoPostDto cargoDto) {
+        if (cargoDto.getNombreCargo().isBlank()) {
+            throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
+        } else if (cargoDto.getCodigoCargo().isBlank()) {
+            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
+        } else if (!cargoDto.getNombreCargo().matches(PATTERN)) {
+            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS_NOMBRE.getValue());
+        } else if (!cargoDto.getCodigoCargo().matches(PATTERN_CODE)) {
+            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS_CODIGO.getValue());
+        } else if(cargoRepository.findCargoByNombreCargoEqualsIgnoreCase(cargoDto.getNombreCargo()).isPresent()){
+            throw new CargoException(MensajesErrores.CARGO_YA_REGISTRADO.getValue());
+        }
+    }
+
+    private void validaDatoString(String str) {
+        if (str.isBlank()) {
+            throw new CargoException(MensajesErrores.CODIGO_CARGO_NULL.getValue());
+        } else if (!str.matches(PATTERN_CODE)) {
+            throw new CargoException(MensajesErrores.CARACTERES_NO_VALIDOS_CODIGO.getValue());
+        } else if(!cargoRepository.findCargoByCodigoCargo(str).isPresent()){
+            throw new CargoException(MensajesErrores.CARGO_NO_EXISTE.getValue());
         }
     }
 

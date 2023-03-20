@@ -3,7 +3,6 @@ package com.cordillera.infrastructure.controllers;
 import com.cordillera.application.service.CargoService;
 import com.cordillera.domain.dto.CargoDto;
 import com.cordillera.domain.dto.CargoPostDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping(value = "/cargos")
 public class CargoController {
 
     private final CargoService cargoService;
+
+    public CargoController(CargoService cargoService) {
+        this.cargoService = cargoService;
+    }
 
     @PostMapping()
     public ResponseEntity<ControllerResponseDto<CargoDto>> guardarCargo(@RequestBody CargoPostDto cargoPostDto){
