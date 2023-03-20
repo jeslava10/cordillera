@@ -19,7 +19,7 @@ public class CargoService {
     private final CargoMapper cargoMapper;
     private final CargoRepository cargoRepository;
     private static final String PATTERN = "^[a-zA-Z]*$";
-    private static final String PATTERN_CODE = "^[0-9]*$";
+    private static final String PATTERN_CODE = "^\\d*$";
 
     public CargoService(CargoMapper cargoMapper, CargoRepository cargoRepository) {
         this.cargoMapper = cargoMapper;
@@ -29,7 +29,7 @@ public class CargoService {
     //Metodo para guardar un cargo
     public CargoDto saveCargo(CargoPostDto cargoPostDto){
 
-        ValidaDatos(cargoPostDto);
+        validaDatos(cargoPostDto);
 
         Cargo cargo = new Cargo();
         try {
@@ -46,7 +46,7 @@ public class CargoService {
     //Metodo para actualizar un cargo
     public CargoDto updateCargo(CargoDto cargoDto) throws CargoException{
 
-        ValidaDatos(cargoDto);
+        validaDatos(cargoDto);
 
         try {
             Cargo cargo = new Cargo();
@@ -123,7 +123,7 @@ public class CargoService {
         }
     }
 
-    private void ValidaDatos(CargoPostDto cargoDto) {
+    private void validaDatos(CargoPostDto cargoDto) {
         if (cargoDto.getNombreCargo().isBlank()) {
             throw new CargoException(MensajesErrores.NOMBRE_NULL.getValue());
         } else if (cargoDto.getCodigoCargo().isBlank()) {
