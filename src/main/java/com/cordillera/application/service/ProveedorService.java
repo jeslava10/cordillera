@@ -3,8 +3,7 @@ package com.cordillera.application.service;
 import com.cordillera.application.mapper.ProveedorMapper;
 import com.cordillera.application.repository.jpa.ProveedorRepository;
 import com.cordillera.domain.dto.ProveedorDto;
-import com.cordillera.domain.excepcion.MesaException;
-import com.cordillera.domain.excepcion.NofoundException;
+import com.cordillera.domain.excepcion.NoFoundException;
 import com.cordillera.domain.excepcion.ProveedorException;
 import com.cordillera.domain.models.Proveedor;
 import lombok.RequiredArgsConstructor;
@@ -32,18 +31,18 @@ public class ProveedorService {
         return proveedorMapper.provewedorModeloToProveedorDTO(proveedorRepository.save(proveedorMapper.proveedorDTOToproveedorModel(proveedorDto)));
     }
 
-    public void deleteProveedor(@PathVariable BigDecimal idproveedor) throws NofoundException {
+    public void deleteProveedor(@PathVariable BigDecimal idproveedor) throws NoFoundException {
         Proveedor proveedorVal = proveedorRepository.findByIdentificacion(idproveedor).orElse(null);
         if(proveedorVal==null){
-            throw new NofoundException("Debe seleccionar almenos un proveedor");
+            throw new NoFoundException("Debe seleccionar almenos un proveedor");
         }
         proveedorRepository.deleteAllById(Collections.singleton(proveedorVal.getIdProveedor()));
     }
 
-    public ProveedorDto updateProveedor(ProveedorDto proveedorDto) throws ProveedorException  , NofoundException  {
+    public ProveedorDto updateProveedor(ProveedorDto proveedorDto) throws ProveedorException  , NoFoundException {
         Proveedor proveedorValId = proveedorRepository.findById(proveedorDto.getIdProveedor()).orElse(null);
         if(proveedorValId==null){
-            throw new NofoundException("El proveedor no existe en el sistema");
+            throw new NoFoundException("El proveedor no existe en el sistema");
         }
         Proveedor proveedorVal = proveedorRepository.findByIdentificacion(proveedorDto.getIdentificacion()).orElse(null);
         if(proveedorVal!=null){
